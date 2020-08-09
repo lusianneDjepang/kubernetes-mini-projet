@@ -1,0 +1,7 @@
+
+---------------Créer un volume pour stocker les données des pods --------------
+
+$ mkdir /data_volume
+
+
+

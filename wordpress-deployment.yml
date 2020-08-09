@@ -1,0 +1,39 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: wordpress-deployment
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: wordpress
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: service-clusterip-mysql 
+        - name: WORDPRESS_DB_NAME
+          value: devops
+        - name: WORDPRESS_DB_USER
+          value: ops
+        - name: WORDPRESS_DB_PASSWORD
+          value: dev
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: wordpress-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-storage
+        hostPath:
+          path: /data_volume
+          type: Directory
